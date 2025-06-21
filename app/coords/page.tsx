@@ -7,47 +7,36 @@ import { currentLocationWeather } from "@/src/Actions/weather";
 import { Loader } from "@/src/elements/Other/Loader";
 import { Result } from "@/src/components/Results";
 import { NoResultsView } from "@/src/elements/GenericViews/NoResultsView";
+import { useQuery } from "@tanstack/react-query";
 
 const CoordsPage = () => {
   const [weather, setWeather] = useState<WeatherResponseType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<string>();
   const searchParams = useSearchParams();
   const lat = searchParams.get("lat");
   const lon = searchParams.get("lon");
 
+  const { isLoading, error, data } = useQuery<DataResponse, Error>({
+    queryKey: ["currentLocationWeather", { lat: lat, lon: lon }],
+    enabled: !!lat && !!lon,
+    queryFn: async () => await currentLocationWeather(Number(lat), Number(lon)),
+  });
+
+  // Update data when queries succeed
   useEffect(() => {
-    const fetchWeather = async () => {
-      setIsLoading(true);
-      if (lat && lon) {
-        try {
-          const weatherData: DataResponse = await currentLocationWeather(
-            Number(lat),
-            Number(lon),
-          );
-
-          if (weatherData?.success && weatherData?.data) {
-            if (weatherData?.data.name === "") {
-              //found data but not name included due to incorrect lat and long
-              setIsError("Incorrect latitude and longitutude");
-            } else {
-              //success
-              setWeather(weatherData?.data);
-            }
-          } else if (!weatherData?.success) {
-            //failed
-            setIsError(weatherData?.message);
-          }
-
-          setIsLoading(false);
-        } catch {
-          setIsLoading(false);
-          setIsError("Somethig went wrong");
-        }
+    if (data?.success && data?.data) {
+      if (data?.data.name === "") {
+        //found data but not name included due to incorrect lat and long
+        setIsError("Incorrect latitude and longitutude");
+      } else {
+        //success
+        setWeather(data?.data);
       }
-    };
-    fetchWeather();
-  }, [lat, lon]);
+    } else if (!data?.success) {
+      //failed
+      setIsError(data?.message);
+    }
+  }, [data, error]);
 
   if (isLoading) {
     return (
