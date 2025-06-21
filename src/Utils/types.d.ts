@@ -26,3 +26,9 @@ export type DataResponse = {
   data?: WeatherResponseType;
   message: string;
 };
+
+export const BUTTON_TYPES = {
+  button: "button",
+  reset: "reset",
+  submit: "submit",
+} as const;

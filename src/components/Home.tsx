@@ -4,20 +4,18 @@ import { useQuery } from "@tanstack/react-query";
 import { getWeatherIcon } from "@/src/lib/iconmaps";
 import { DataResponse, WeatherResponseType, WeatherType } from "../Utils/types";
 import { cityNameWeather } from "../Actions/weather";
-import { Search } from "../elements/Input/Search";
 import { DefaultView } from "../elements/GenericViews/DefaultView";
 import { Loader } from "../elements/Other/Loader";
 import { WeatherCard } from "./WeatherCard";
 import { Result } from "./Results";
 import { NoResultsView } from "../elements/GenericViews/NoResultsView";
-import { PrimaryButton } from "../elements/Buttons/PrimaryButton";
+import { LeftSearchSide } from "../elements/GenericViews/LeftSearchSide";
 
 export const Home = () => {
   // This is the values to be sent to the API with debounce
   const [searchedValue, setSearchedValue] = useState<string>("");
-  const [inputField, setInputField] = useState<string>("");
   const [dataWeather, setDataWeather] = useState<WeatherResponseType | null>(
-    null,
+    null
   );
   const [dataError, setDataError] = useState<string | undefined>();
 
@@ -42,33 +40,15 @@ export const Home = () => {
 
   return (
     <>
-      <div className="flex w-full flex-col items-center justify-center gap-4 px-2 sm:px-[1.563rem]">
-        <h1 className="font-blue text-1xl text-center">
-          Type in the city name
-          <br />
-          to find the weather forecast
-        </h1>
-        <div className="flex w-[50%] flex-col items-center justify-center gap-y-4 sm:w-[80%]">
-          <Search
-            loading={isLoading}
-            searchedValue={searchedValue}
-            setSearchValue={setInputField}
-            handleButtonClick={() => {
-              setSearchedValue("");
-              setInputField("");
-              setDataError(undefined);
-              setDataWeather(null);
-            }}
-          />
-
-          <PrimaryButton
-            isLoading={isLoading}
-            buttonText={"Search"}
-            onClick={() => setSearchedValue(inputField)}
-          />
-        </div>
-      </div>
-
+      <LeftSearchSide
+        isLoading={isLoading}
+        handleChange={(e) => setSearchedValue(e)}
+        handleClose={() => {
+          setSearchedValue("");
+          setDataError(undefined);
+          setDataWeather(null);
+        }}
+      />
       <div className="md:bg-white-smoke flex w-full flex-col gap-4 px-2 sm:px-[1.563rem] md:h-full md:py-[1.563rem]">
         {isLoading && (
           <div className="flex grow items-center justify-center">
@@ -98,7 +78,7 @@ export const Home = () => {
                     }}
                   />
                 );
-              },
+              }
             )}
         </div>
         {dataWeather && (

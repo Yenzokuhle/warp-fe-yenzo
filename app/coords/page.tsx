@@ -47,12 +47,12 @@ const CoordsPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-amber-400 px-12 pt-6">
+    <div className="flex min-h-screen flex-col items-center justify-center px-6">
       {!isLoading && isError && <NoResultsView text={isError} />}
 
       {!isLoading && weather && (
         <div className="bg-white-smoke relative flex min-h-screen w-full flex-col p-2">
-          <Result weather={weather} />{" "}
+          <Result weather={weather} />
         </div>
       )}
     </div>
