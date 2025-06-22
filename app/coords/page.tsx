@@ -3,23 +3,34 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { DataResponse, WeatherResponseType } from "@/src/Utils/types";
-import { currentLocationWeather } from "@/src/Actions/weather";
 import { Loader } from "@/src/elements/Other/Loader";
 import { Result } from "@/src/components/Results";
 import { NoResultsView } from "@/src/elements/GenericViews/NoResultsView";
 import { useQuery } from "@tanstack/react-query";
 
+const getWeatherata = async (lat?: number, lng?: number) => {
+  const res = await fetch(`/api/coords/${lat}/${lng}`); // Call your API Route
+
+  if (!res.ok) {
+    return {
+      success: false,
+      message: "Something went wrong, please check url or internet",
+    };
+  }
+  return res.json();
+};
+
 const CoordsPage = () => {
   const [weather, setWeather] = useState<WeatherResponseType | null>(null);
   const [isError, setIsError] = useState<string>();
   const searchParams = useSearchParams();
-  const lat = searchParams.get("lat");
-  const lon = searchParams.get("lon");
+  const lat = searchParams?.get("lat");
+  const lon = searchParams?.get("lon");
 
-  const { isLoading, error, data } = useQuery<DataResponse, Error>({
-    queryKey: ["currentLocationWeather", { lat: lat, lon: lon }],
+  const { data, isLoading, error } = useQuery<DataResponse, Error>({
+    queryKey: ["/api/coords/", { lat: lat, lon: lon }], // Unique key for this query
     enabled: !!lat && !!lon,
-    queryFn: async () => await currentLocationWeather(Number(lat), Number(lon)),
+    queryFn: async () => await getWeatherata(Number(lat), Number(lon)), // Function to fetch data
   });
 
   // Update data when queries succeed
