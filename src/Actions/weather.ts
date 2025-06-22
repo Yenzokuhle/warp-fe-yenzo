@@ -1,12 +1,13 @@
 "use server";
 
 import { DataResponse, WeatherResponseType } from "../Utils/types";
+import { getResponse } from "../Utils/utils";
 
-const API_URL = `https://api.openweathermap.org/data/2.5/weather`;
+const API_URL = process.env.API_URL!;
 
 const constructUrlAndGetData = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  params: any,
+  params: any
 ): Promise<WeatherResponseType> => {
   const url = new URL(API_URL);
 
@@ -20,7 +21,7 @@ const constructUrlAndGetData = async (
     }
   }
 
-  url.searchParams.set("units", "metric");
+  url.searchParams.set("units", "metric"); //metric = Celsius
   url.searchParams.set("lang", "en");
   url.searchParams.set("appid", process.env.OPEN_WEATHER_API_KEY!);
 
@@ -45,33 +46,28 @@ const constructUrlAndGetData = async (
 
 export const currentLocationWeather = async (
   lat?: number,
-  lon?: number,
+  lon?: number
 ): Promise<DataResponse> => {
   if (!lat || !lon) {
-    throw new Error("Lat and Lng are required.");
+    console.error("Lat and Lng are required.");
+    return getResponse(false, "Lat and Lng are required.");
   }
 
   const results = await constructUrlAndGetData({ lat, lon });
 
   if (results.cod !== 200 || !!results.message) {
-    return {
-      success: false,
-      message: results?.message || "Something went wrong",
-    };
+    return getResponse(false, results?.message || "Something went wrong");
   }
 
-  return {
-    success: true,
-    message: "Successfully received weather data",
-    data: results,
-  };
+  return getResponse(true, "Successfully received weather data", results);
 };
 
 export const cityNameWeather = async (
-  city_name: string,
+  city_name: string
 ): Promise<DataResponse> => {
   if (!city_name || city_name.trim() === "") {
-    throw new Error("City name is required.");
+    console.error("City name is required.");
+    return getResponse(false, "City name is required.");
   }
 
   // console.log("\nCITY NAME:", city_name);
@@ -79,15 +75,8 @@ export const cityNameWeather = async (
   const results = await constructUrlAndGetData({ q: city_name.trim() });
 
   if (results.cod !== 200 || !!results.message) {
-    return {
-      success: false,
-      message: results?.message || "Something went wrong",
-    };
+    return getResponse(false, results?.message || "Something went wrong");
   }
 
-  return {
-    success: true,
-    message: "Successfully received weather data",
-    data: results,
-  };
+  return getResponse(true, "Successfully received weather data", results);
 };
