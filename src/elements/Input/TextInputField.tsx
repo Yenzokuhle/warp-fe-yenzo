@@ -30,7 +30,6 @@ const TextInputField: React.FC<Props> = ({
   } = useFormContext();
   const [inputValue, setInputValue] = useState(value);
   const [inFocus, setInFocus] = useState(false);
-  const [characterCount, setCharacterCount] = useState<number>(0);
 
   useEffect(() => {
     if (!inFocus && inputValue) {
@@ -45,17 +44,8 @@ const TextInputField: React.FC<Props> = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const val = event.target.value;
 
-    if (type === "text") {
-      const onlyText = val.replace(/\s/g, "");
-      setCharacterCount(onlyText.length);
-      if (characterCount) {
-        setInputValue(val);
-        setValue(name, val, { shouldValidate: true }); //updates the value on the Mother Context
-      }
-    } else {
-      setInputValue(val);
-      setValue(name, val, { shouldValidate: true }); //updates the value on the Mother Context
-    }
+    setInputValue(val);
+    setValue(name, val, { shouldValidate: true }); //updates the value on the Mother Context
   };
 
   const handleBlur = (): void => {
