@@ -44,7 +44,6 @@ const TextInputField: React.FC<Props> = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const val = event.target.value;
-    //console.log(`handleChange: `, val);
 
     if (type === "text") {
       const onlyText = val.replace(/\s/g, "");
