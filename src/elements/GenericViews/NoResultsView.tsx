@@ -26,7 +26,7 @@ export const NoResultsView = ({ text, onClose }: NoResultsViewProps) => {
         fontWeight="font-light"
         fontSize="text-[18px]"
         fontColor={`text-color-blue`}
-        customClass="md:block"
+        customClass="md:block text-center"
       />
     </div>
   );

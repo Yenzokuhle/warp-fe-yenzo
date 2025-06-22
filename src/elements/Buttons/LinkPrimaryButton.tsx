@@ -17,7 +17,7 @@ export const LinkPrimaryButton = ({
   return (
     <Link
       href={href}
-      className={`border-green w-fit rounded-[1.625rem] border bg-white px-4 text-base font-normal ${className}`}
+      className={`border-green w-fit rounded-[1.625rem] border bg-white px-4 text-base font-normal ${className} text-center`}
       onClick={() => onClick && onClick()}
     >
       {buttonText}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as Yup from "yup";
-import { FormProvider, useForm } from "react-hook-form";
+import { FieldErrors, FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import TextInputField from "../Input/TextInputField";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
@@ -34,16 +34,16 @@ export const LeftSearchSide = ({
     defaultValues: MainFormDefaultValues,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const customHandleSubmit = async (dataResults: MainForm, e?: any) => {
+  const customHandleSubmit = async (
+    dataResults: MainForm,
+    e?: React.BaseSyntheticEvent
+  ) => {
     e?.preventDefault();
-    console.log("Submitting results: ", dataResults?.searchString);
     handleChange(dataResults?.searchString);
   };
 
-  // eslint-disable-next-line
-  const onError = (errors: any) => {
-    //setErrorMessage(errors);
+  const onError = (errors: FieldErrors<MainForm>) => {
+    console.warn(errors);
   };
 
   return (
@@ -68,12 +68,14 @@ export const LeftSearchSide = ({
               />
             </div>
 
-            <PrimaryButton
-              type={"submit"}
-              isLoading={isLoading}
-              onClick={() => null}
-              buttonText={"Search"}
-            />
+            <div className="w-[240px] h-auto self-center flex justify-center">
+              <PrimaryButton
+                type={"submit"}
+                isLoading={isLoading}
+                onClick={() => null}
+                buttonText={"Search"}
+              />
+            </div>
           </form>
         </FormProvider>
       </div>
