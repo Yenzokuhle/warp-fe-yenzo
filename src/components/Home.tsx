@@ -3,13 +3,25 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getWeatherIcon } from "@/src/lib/iconmaps";
 import { DataResponse, WeatherResponseType, WeatherType } from "../Utils/types";
-import { cityNameWeather } from "../Actions/weather";
 import { DefaultView } from "../elements/GenericViews/DefaultView";
 import { Loader } from "../elements/Other/Loader";
 import { WeatherCard } from "./WeatherCard";
 import { Result } from "./Results";
 import { NoResultsView } from "../elements/GenericViews/NoResultsView";
 import { LeftSearchSide } from "../elements/GenericViews/LeftSearchSide";
+
+const getWeatherata = async (city: string) => {
+  const res = await fetch(`/api/cityName/${city}`); // Call your API Route
+
+  if (!res.ok) {
+    return {
+      success: false,
+      message: "Something went wrong",
+    };
+  }
+
+  return res.json();
+};
 
 export const Home = () => {
   // This is the values to be sent to the API with debounce
@@ -19,10 +31,10 @@ export const Home = () => {
   );
   const [dataError, setDataError] = useState<string | undefined>();
 
-  const { isLoading, error, data } = useQuery<DataResponse, Error>({
-    queryKey: ["cityNameWeather", searchedValue],
+  const { data, isLoading, error } = useQuery<DataResponse, Error>({
+    queryKey: ["/api/cityName/", searchedValue], // Unique key for this query
     enabled: !!searchedValue && searchedValue.trim() !== "",
-    queryFn: async () => await cityNameWeather(searchedValue),
+    queryFn: async () => await getWeatherata(searchedValue), // Function to fetch data
   });
 
   // Update data when queries succeed
@@ -81,7 +93,7 @@ export const Home = () => {
               }
             )}
         </div>
-        {dataWeather && (
+        {!isLoading && dataWeather && (
           <div className="hidden md:block">
             <Result
               weather={dataWeather}
@@ -93,7 +105,7 @@ export const Home = () => {
             />
           </div>
         )}
-        {dataError && (
+        {!isLoading && dataError && (
           <NoResultsView
             text={dataError}
             onClose={() => {

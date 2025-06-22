@@ -21,7 +21,7 @@ export const PrimaryButton = ({
     <button
       type={type}
       aria-disabled={isLoading}
-      className={`border-green w-auto rounded-[1.625rem] border bg-white px-[28px] py-[4px] text-base font-normal ${className} cursor-pointer`}
+      className={`border-green bg-green w-auto rounded-[1.625rem] border px-[28px] py-[4px] text-base font-normal ${className} cursor-pointer`}
       onClick={() => onClick && onClick()}
     >
       {isLoading ? "Searching" : buttonText}

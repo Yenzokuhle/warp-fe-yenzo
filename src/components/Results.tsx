@@ -21,10 +21,10 @@ export const Result: React.FC<ResultProps> = ({ weather, onClose }) => {
         <div className="mr-6 flex-shrink-0 text-purple-400">{WeatherIcon}</div>
         {/* City and Description */}
         <div className="mr-8 flex flex-col items-start">
-          <span className="text-2xl leading-tight font-bold text-blue-900">
+          <span className="text-2xl leading-tight font-bold text-blu">
             {weather.name}
           </span>
-          <span className="text-lg font-semibold text-blue-900">
+          <span className="text-lg font-semibold text-blue">
             {weather.weather[0]?.description}
           </span>
         </div>
@@ -38,16 +38,16 @@ export const Result: React.FC<ResultProps> = ({ weather, onClose }) => {
             </Link>
           )}
           <div className="mt-2 flex items-center gap-2">
-            <span className="text-xl font-semibold text-blue-900">
+            <span className="text-xl font-semibold text-blue">
               {/* {weather.main.temp} */}
               {Math.round(weather.main.temp)}
             </span>
-            <FaThermometerHalf className="text-blue-900" />
-            <span className="text-base font-normal text-blue-900">°C</span>
+            <FaThermometerHalf className="text-blue" />
+            <span className="text-base font-normal text-blue">°C</span>
           </div>
         </div>
       </div>
-      <p className="mx-auto mt-10 max-w-2xl text-center text-lg font-normal text-blue-700">
+      <p className="mx-auto mt-10 max-w-2xl text-center text-lg font-normal text-blue">
         {weather.weather[0]?.description}
       </p>
     </>
