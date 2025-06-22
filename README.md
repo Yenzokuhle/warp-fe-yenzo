@@ -103,8 +103,9 @@ Celsius
 
 ## Bonus specific libraries used
 
-1. [React Query from Tanstack](https://tanstack.com/query/latest) - Reasons here ...
-2. [NextJS API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) - Reasons here ...
+1. [React Query from Tanstack](https://tanstack.com/query/latest) - React Query helps for managing server state in React applications, enabling efficient handling of asynchronous data like API requests.
+
+2. [NextJS API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) - Next.js API Routes simplifies the process of implementing an API for our applications.
 
 ## Built With
 
