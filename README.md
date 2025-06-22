@@ -69,7 +69,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can also access `API Routes` standalone on the broswer by typing:
+You can also access `API Routes` standalone on the browser by typing:
 
 ```bash
 http://localhost:3000/api/cityName/INSERT_CITY_NAME_HERE
